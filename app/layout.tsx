@@ -1,25 +1,19 @@
 import type { Metadata } from "next";
-import { Newsreader, Playfair_Display, Source_Sans_3 } from "next/font/google";
+import { Newsreader, Space_Grotesk } from "next/font/google";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import { StoreProvider } from "@/lib/store";
 import { Nav } from "@/components/Nav";
 
-const playfair = Playfair_Display({
+const grotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-playfair",
-  style: ["normal", "italic"],
+  variable: "--font-grotesk",
 });
 
 const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
   style: ["normal", "italic"],
-});
-
-const sourceSans = Source_Sans_3({
-  subsets: ["latin"],
-  variable: "--font-source-sans",
 });
 
 export const metadata: Metadata = {
@@ -36,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${newsreader.variable} ${sourceSans.variable}`}
+      className={`${grotesk.variable} ${newsreader.variable}`}
     >
       <body className="min-h-screen antialiased">
         <StoreProvider>

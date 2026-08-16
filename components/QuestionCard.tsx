@@ -95,10 +95,8 @@ export function QuestionCard({
                   ? "Remove your vote"
                   : "Vote this question up — your vote helps validate it for every member"
               }
-              className={`inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1 text-[12px] font-semibold transition-colors ${
-                voted
-                  ? "border-gold/60 bg-gold-soft text-gold"
-                  : "border-hairline text-soft hover:border-gold/50 hover:bg-gold-soft/50 hover:text-gold"
+              className={`pop-btn inline-flex items-center gap-1.5 px-3 py-1 text-[12px] ${
+                voted ? "bg-gold-soft text-ink" : "bg-sheet text-soft hover:text-ink"
               }`}
             >
               ▲ {totalVotes}
@@ -107,7 +105,7 @@ export function QuestionCard({
             <Link
               href="/login"
               title="Log in to vote — free during early access"
-              className="inline-flex items-center gap-1.5 rounded-sm border border-hairline px-2.5 py-1 text-[12px] font-semibold text-soft transition-colors hover:border-hairline-dark hover:text-ink"
+              className="pop-btn inline-flex items-center gap-1.5 bg-sheet px-3 py-1 text-[12px] text-soft hover:text-ink"
             >
               ▲ {totalVotes}
             </Link>
@@ -163,7 +161,7 @@ export function QuestionCard({
           <button
             onClick={() => addQuestion(question.id)}
             disabled={inWorksheet}
-            className={`ml-1 rounded-sm px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+            className={`ml-1 rounded-full px-3 py-1 text-[11px] font-bold transition-colors ${
               inWorksheet
                 ? "text-faint"
                 : "bg-accent text-paper hover:bg-ink"

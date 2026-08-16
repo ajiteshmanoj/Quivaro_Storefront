@@ -17,9 +17,9 @@
   --color-flag: #9a6b15;
   --color-flag-soft: #f6eeda;
 
-  --font-display: var(--font-playfair);
+  --font-display: var(--font-grotesk);
   --font-serif: var(--font-newsreader);
-  --font-sans: var(--font-source-sans);
+  --font-sans: var(--font-grotesk);
 }
 
 html {
@@ -60,6 +60,61 @@ body {
 
 .katex {
   font-size: 1.04em;
+}
+
+/* ---------- gen-z primitives ---------- */
+
+.pop-card {
+  border: 2px solid var(--color-ink);
+  border-radius: 1.25rem;
+  background: var(--color-sheet);
+  box-shadow: 4px 4px 0 var(--color-ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.pop-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--color-ink);
+}
+
+.pop-btn {
+  border: 2px solid var(--color-ink);
+  border-radius: 9999px;
+  box-shadow: 3px 3px 0 var(--color-ink);
+  font-weight: 700;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.pop-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--color-ink);
+}
+.pop-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--color-ink);
+}
+
+.sticker {
+  border: 2px solid var(--color-ink);
+  border-radius: 9999px;
+  box-shadow: 2px 2px 0 var(--color-ink);
+  font-weight: 700;
+}
+
+.hl-gold {
+  background-image: linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--color-gold) 45%, transparent) 42%,
+    transparent 42%
+  );
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite;
 }
 
 /* ---------- motion ---------- */

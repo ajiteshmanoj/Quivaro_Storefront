@@ -43,7 +43,7 @@ export default function LoginPage() {
     <main className="mx-auto max-w-md px-6 py-20">
       <div className="text-center">
         <h1 className="font-display text-4xl font-bold tracking-tight">
-          Join <span className="text-gold">Quivaro</span>
+          join the <span className="hl-gold">club</span> ✨
         </h1>
         <p className="mt-3 font-serif text-soft">
           Free during early access. Members who join now keep the{" "}
@@ -108,13 +108,13 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={!name.trim()}
-          className={`w-full rounded-sm py-3 text-sm font-semibold transition-colors ${
+          className={`w-full rounded-full py-3 text-sm font-bold transition-all ${
             name.trim()
-              ? "bg-accent text-paper hover:bg-ink"
-              : "bg-hairline text-faint"
+              ? "pop-btn bg-accent text-paper"
+              : "border-2 border-hairline bg-hairline text-faint"
           }`}
         >
-          Join free
+          count me in — it&apos;s free
         </button>
 
         <p className="text-center text-[11px] leading-relaxed text-faint">

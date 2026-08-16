@@ -22,7 +22,7 @@ export function Nav() {
             href="/"
             className="font-display text-[22px] font-bold tracking-tight text-accent"
           >
-            Quivaro
+            Quivaro<span className="text-gold">✦</span>
           </Link>
           <nav className="flex items-baseline gap-7">
             {LINKS.map((l) => {
@@ -47,8 +47,8 @@ export function Nav() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <span className="hidden rounded-full border border-hairline-dark px-3 py-1 text-[11px] font-medium tracking-wide text-soft md:block">
-            Free during early access
+          <span className="hidden -rotate-2 rounded-full border-2 border-ink bg-gold-soft px-3 py-1 text-[11px] font-bold text-ink md:block">
+            free rn ✨
           </span>
           {user ? (
             <>
@@ -76,9 +76,9 @@ export function Nav() {
           ) : (
             <Link
               href="/login"
-              className="rounded-sm bg-accent px-3.5 py-1.5 text-xs font-semibold text-paper transition-colors hover:bg-ink"
+              className="pop-btn bg-accent px-4 py-1.5 text-xs text-paper"
             >
-              Log in
+              log in
             </Link>
           )}
         </div>

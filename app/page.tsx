@@ -2,49 +2,72 @@ import Link from "next/link";
 import { CONTRIBUTORS, NOTES, QUESTIONS } from "@/lib/data";
 import { MathText } from "@/components/MathText";
 
+const MARQUEE = [
+  "calculus",
+  "✦",
+  "vectors",
+  "✦",
+  "complex numbers",
+  "✦",
+  "teacher approved",
+  "✦",
+  "zero mid questions",
+  "✦",
+  "stats & prob",
+  "✦",
+  "free during early access",
+  "✦",
+  "AA + AI · HL + SL",
+  "✦",
+];
+
 export default function Home() {
   const validated = QUESTIONS.filter((q) => q.status === "validated").length;
   const totalApprovals = CONTRIBUTORS.reduce((s, c) => s + c.approvals, 0);
   const featured = QUESTIONS.find((q) => q.id === "q-cal-01")!;
 
   return (
-    <main className="mx-auto max-w-6xl px-6">
-      {/* hero — centered, in the brand style */}
-      <section className="border-b border-hairline py-20 text-center md:py-28">
-        <p className="label mb-6 !text-accent">
-          IB Mathematics · AA HL·SL — AI HL·SL
+    <main>
+      {/* hero */}
+      <section className="mx-auto max-w-6xl px-6 pb-16 pt-16 text-center md:pt-24">
+        <p className="mx-auto mb-6 inline-block -rotate-1 rounded-full border-2 border-ink bg-gold-soft px-4 py-1.5 text-xs font-bold tracking-wide text-ink">
+          IB MATH AA + AI · HL + SL 📐
         </p>
-        <h1 className="mx-auto max-w-3xl font-display text-5xl font-bold leading-[1.1] tracking-tight text-ink md:text-6xl">
-          Study smarter with <span className="text-gold">Quivaro</span>
+        <h1 className="mx-auto max-w-3xl font-display text-5xl font-bold leading-[1.05] tracking-tight text-ink md:text-7xl">
+          study smarter with{" "}
+          <span className="hl-gold whitespace-nowrap">Quivaro</span>
         </h1>
-        <p className="mx-auto mt-6 max-w-xl font-serif text-lg leading-relaxed text-soft">
-          Worksheets built from a bank of questions validated by IB teachers —
-          served from the factory&rsquo;s question database, categorised by
-          subject, topic and level. Reject what you don&rsquo;t like; a
-          replacement arrives in seconds.
+        <p className="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-soft">
+          Worksheets from questions real IB teachers actually approved. Swap out
+          the ones you don&rsquo;t vibe with — a replacement shows up in
+          seconds. Print something that looks proper.
         </p>
-        <div className="mt-9 flex items-center justify-center gap-5">
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
           <Link
             href="/build"
-            className="rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-paper transition-colors hover:bg-ink"
+            className="pop-btn bg-accent px-7 py-3 text-sm text-paper"
           >
-            Start building
+            start building →
           </Link>
           <Link
             href="/bank"
-            className="text-sm font-medium text-soft underline decoration-hairline-dark underline-offset-4 transition-colors hover:text-ink hover:decoration-gold"
+            className="pop-btn bg-sheet px-7 py-3 text-sm text-ink"
           >
-            Browse the bank
+            browse the bank
           </Link>
         </div>
-        <p className="mt-8 text-xs text-faint">
-          Free everywhere during early access — worked solutions included.
-          Members who join now keep the Founding member tag forever.
+        <p className="mt-7 text-xs font-medium text-faint">
+          100% free rn — worked solutions included. Join now, keep the{" "}
+          <span className="font-bold text-gold">Founding member</span> tag
+          forever ✨
         </p>
 
         {/* specimen */}
         <div className="mx-auto mt-14 max-w-xl text-left">
-          <div className="border border-hairline bg-sheet p-7 shadow-xl shadow-ink/5">
+          <div className="pop-card relative rotate-[0.6deg] p-7">
+            <span className="sticker absolute -top-3.5 right-6 bg-accent px-3 py-1 text-[11px] text-paper">
+              ✓ teacher approved
+            </span>
             <div className="mb-3 flex items-baseline justify-between">
               <span className="q-number">01</span>
               <span className="q-number">[{featured.marks}]</span>
@@ -52,71 +75,91 @@ export default function Home() {
             <p className="font-serif text-[16px] leading-relaxed text-ink">
               <MathText text={featured.text} />
             </p>
-            <div className="mt-5 flex items-center justify-between border-t border-hairline pt-4">
-              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent">
+            <div className="mt-5 flex items-center justify-between border-t-2 border-ink/10 pt-4">
+              <span className="text-[12px] font-bold text-accent">
                 ▲ 7 teacher votes
               </span>
-              <span className="text-[11px] text-faint">
-                Calculus · AA · validated
+              <span className="text-[11px] font-medium text-faint">
+                Calculus · AA
               </span>
             </div>
           </div>
         </div>
       </section>
 
+      {/* marquee */}
+      <div className="overflow-hidden border-y-2 border-ink bg-accent py-2.5">
+        <div className="marquee-track">
+          {[...MARQUEE, ...MARQUEE].map((t, i) => (
+            <span
+              key={i}
+              className="mx-4 shrink-0 text-sm font-bold lowercase tracking-wide text-paper"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
       {/* the three pillars */}
-      <section className="grid border-b border-hairline md:grid-cols-3">
+      <section className="mx-auto grid max-w-6xl gap-6 px-6 py-16 md:grid-cols-3">
         {[
           {
             href: "/bank",
-            n: "01",
-            title: "The Bank",
-            body: "Every question, categorised by subject, topic and level, ranked by member votes. Browse, vote, flag, add.",
+            emoji: "🏦",
+            title: "the bank",
+            body: "Every question sorted by subject, topic and level — ranked by member votes. Browse, vote, flag, add.",
+            tilt: "-rotate-1",
           },
           {
             href: "/build",
-            n: "02",
-            title: "The Studio",
-            body: "Assemble a worksheet, reject questions in preview, interleave notes between exercises, choose a paper template.",
+            emoji: "🛠️",
+            title: "the studio",
+            body: "Stack questions, drop notes between them, pick a paper template, hit compile. Done before class starts.",
+            tilt: "rotate-0",
           },
           {
             href: "/login",
-            n: "03",
-            title: "Membership",
-            body: "Join free, earn tags like IB Teacher, and vote on questions. Your votes decide what the bank serves — it is yours as much as ours.",
+            emoji: "🏷️",
+            title: "membership",
+            body: "Join free, earn tags like IB Teacher, vote on what stays in the bank. It's yours as much as ours.",
+            tilt: "rotate-1",
           },
-        ].map((c, i) => (
+        ].map((c) => (
           <Link
             key={c.href}
             href={c.href}
-            className={`group py-12 pr-8 transition-colors hover:bg-sheet md:px-8 ${
-              i > 0 ? "border-t border-hairline md:border-l md:border-t-0" : ""
-            }`}
+            className={`pop-card ${c.tilt} p-7 transition-transform`}
           >
-            <p className="font-display text-sm italic text-gold">{c.n}</p>
-            <h2 className="mt-2 font-display text-2xl font-bold text-ink group-hover:text-accent">
+            <span className="text-3xl">{c.emoji}</span>
+            <h2 className="mt-3 font-display text-2xl font-bold text-ink">
               {c.title}
             </h2>
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-soft">
-              {c.body}
-            </p>
+            <p className="mt-2 text-sm leading-relaxed text-soft">{c.body}</p>
           </Link>
         ))}
       </section>
 
       {/* numbers */}
-      <section className="flex flex-wrap gap-x-16 gap-y-8 py-14">
+      <section className="mx-auto flex max-w-6xl flex-wrap justify-center gap-5 px-6 pb-16">
         {[
           [String(QUESTIONS.length), "questions in the bank"],
-          [String(validated), "member-validated"],
+          [String(validated), "teacher-validated"],
           [String(NOTES.length), "notes chunks"],
-          [String(totalApprovals), "votes cast by members"],
-        ].map(([n, l]) => (
-          <div key={l}>
-            <p className="font-display text-4xl font-bold tabular-nums text-ink">
+          [String(totalApprovals), "votes cast"],
+        ].map(([n, l], i) => (
+          <div
+            key={l}
+            className={`sticker bg-sheet px-6 py-3 text-center ${
+              i % 2 === 0 ? "-rotate-1" : "rotate-1"
+            }`}
+          >
+            <span className="font-display text-2xl font-bold tabular-nums text-accent">
               {n}
-            </p>
-            <p className="label mt-1.5">{l}</p>
+            </span>
+            <span className="ml-2 text-xs font-semibold lowercase text-soft">
+              {l}
+            </span>
           </div>
         ))}
       </section>
