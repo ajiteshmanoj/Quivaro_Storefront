@@ -26,6 +26,15 @@ export interface BuildItem {
   replacing?: boolean;
 }
 
+export type MemberRole = "IB certified teacher" | "Teacher" | "Tutor" | "Student";
+
+export interface User {
+  name: string;
+  initials: string;
+  role: MemberRole;
+  tags: string[];
+}
+
 interface RejectedEntry {
   id: string;
   kind: "question" | "note";
@@ -43,6 +52,8 @@ interface StoreState {
   extraApprovals: Record<string, number>;
   localFlags: Record<string, FlagReason>;
   hydrated: boolean;
+  user: User | null;
+  myVotes: Record<string, boolean>;
 
   setTitle: (t: string) => void;
   setLevel: (l: Level) => void;
@@ -60,6 +71,9 @@ interface StoreState {
 
   approve: (qid: string) => void;
   flag: (qid: string, reason: FlagReason) => void;
+  login: (name: string, role: MemberRole) => void;
+  logout: () => void;
+  toggleVote: (qid: string) => void;
 
   usedQuestionIds: () => Set<string>;
 }
@@ -84,6 +98,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [extraApprovals, setExtraApprovals] = useState<Record<string, number>>({});
   const [localFlags, setLocalFlags] = useState<Record<string, FlagReason>>({});
   const [hydrated, setHydrated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [myVotes, setMyVotes] = useState<Record<string, boolean>>({});
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // hydrate from localStorage
@@ -100,6 +116,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (Array.isArray(s.rejectedLog)) setRejectedLog(s.rejectedLog);
         if (s.extraApprovals) setExtraApprovals(s.extraApprovals);
         if (s.localFlags) setLocalFlags(s.localFlags);
+        if (s.user) setUser(s.user);
+        if (s.myVotes) setMyVotes(s.myVotes);
       }
     } catch {
       // ignore corrupted state
@@ -119,9 +137,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       rejectedLog,
       extraApprovals,
       localFlags,
+      user,
+      myVotes,
     };
     localStorage.setItem(LS_KEY, JSON.stringify(state));
-  }, [items, title, level, template, showAnswers, rejectedLog, extraApprovals, localFlags, hydrated]);
+  }, [items, title, level, template, showAnswers, rejectedLog, extraApprovals, localFlags, user, myVotes, hydrated]);
 
   useEffect(() => {
     const pending = timers.current;
@@ -256,6 +276,36 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     ]);
   }, []);
 
+  const login = useCallback((name: string, role: MemberRole) => {
+    const parts = name.trim().split(/\s+/);
+    const initials = parts
+      .slice(0, 2)
+      .map((p) => p[0]?.toUpperCase() ?? "")
+      .join(" ");
+    const tags =
+      role === "IB certified teacher"
+        ? ["IB Teacher", "Founding member"]
+        : [role, "Founding member"];
+    setUser({ name: name.trim(), initials, role, tags });
+  }, []);
+
+  const logout = useCallback(() => setUser(null), []);
+
+  /** Reddit-style vote toggle — a vote is an approval with ownership. */
+  const toggleVote = useCallback((qid: string) => {
+    setMyVotes((prev) => {
+      const voted = !!prev[qid];
+      setExtraApprovals((ea) => ({
+        ...ea,
+        [qid]: (ea[qid] ?? 0) + (voted ? -1 : 1),
+      }));
+      const next = { ...prev };
+      if (voted) delete next[qid];
+      else next[qid] = true;
+      return next;
+    });
+  }, []);
+
   const value: StoreState = {
     items,
     title,
@@ -281,6 +331,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     approve,
     flag,
     usedQuestionIds,
+    user,
+    myVotes,
+    login,
+    logout,
+    toggleVote,
   };
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

@@ -16,13 +16,13 @@ access; founding contributors keep full access forever.
   reject→replace, notes interleaving, template picker
 - **`/compile`** — print-ready sheet in 5 templates (Examination, Classic,
   Workbook, Compact, Premium) with optional answer key; print/save PDF
-- **`/community`** — validated bank, awaiting-review queue, returned-to-factory
-  queue, contributor standing with hold-up rates
+- **`/login` / `/profile`** — free membership with Reddit-style tags (IB Teacher,
+  Founding member); votes validate questions and shape what the bank serves
 
 ## Stack
 
 Next.js (App Router) · Tailwind v4 · KaTeX for math typesetting ·
-Fraunces / Newsreader / Inter. All data is mocked in `lib/data.ts`; builder
+Playfair Display / Newsreader / Source Sans 3. All data is mocked in `lib/data.ts`; builder
 state lives in `lib/store.tsx` (localStorage-persisted). No backend — this is
 the design prototype for the storefront.
 

@@ -6,13 +6,12 @@ import { useStore } from "@/lib/store";
 
 const LINKS = [
   { href: "/bank", label: "Bank" },
-  { href: "/build", label: "Build" },
-  { href: "/community", label: "Community" },
+  { href: "/build", label: "Studio" },
 ];
 
 export function Nav() {
   const pathname = usePathname();
-  const { items } = useStore();
+  const { items, user, logout } = useStore();
   const count = items.filter((i) => i.kind === "question").length;
 
   return (
@@ -21,10 +20,9 @@ export function Nav() {
         <div className="flex items-baseline gap-10">
           <Link
             href="/"
-            className="font-display text-xl font-semibold tracking-tight text-ink"
+            className="font-display text-[22px] font-bold tracking-tight text-accent"
           >
             Quivaro
-            <span className="ml-0.5 text-accent">.</span>
           </Link>
           <nav className="flex items-baseline gap-7">
             {LINKS.map((l) => {
@@ -49,12 +47,40 @@ export function Nav() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <span className="hidden text-xs text-faint sm:block">
-            IB Mathematics · AA &amp; AI
-          </span>
-          <span className="rounded-full border border-hairline-dark px-3 py-1 text-[11px] font-medium tracking-wide text-soft">
+          <span className="hidden rounded-full border border-hairline-dark px-3 py-1 text-[11px] font-medium tracking-wide text-soft md:block">
             Free during early access
           </span>
+          {user ? (
+            <>
+              <Link
+                href="/profile"
+                className="flex items-center gap-2"
+                title={user.tags.join(" · ")}
+              >
+                <span className="text-xs font-semibold tracking-[0.15em] text-ink">
+                  {user.initials}
+                </span>
+                {user.tags[0] && (
+                  <span className="hidden rounded-sm border border-gold/50 bg-gold-soft px-1.5 py-0.5 text-[10px] font-semibold text-gold sm:inline">
+                    {user.tags[0]}
+                  </span>
+                )}
+              </Link>
+              <button
+                onClick={logout}
+                className="text-xs text-soft transition-colors hover:text-ink"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="rounded-sm bg-accent px-3.5 py-1.5 text-xs font-semibold text-paper transition-colors hover:bg-ink"
+            >
+              Log in
+            </Link>
+          )}
         </div>
       </div>
     </header>

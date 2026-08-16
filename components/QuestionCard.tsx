@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { MathText } from "./MathText";
 import { useStore } from "@/lib/store";
 import { FLAG_REASONS, type FlagReason, type Question } from "@/lib/data";
@@ -23,20 +24,11 @@ export function LevelChips({ levels }: { levels: string[] }) {
 export function ValidationBadge({ count }: { count: number }) {
   if (count === 0)
     return (
-      <span className="text-[11px] font-medium text-faint">awaiting review</span>
+      <span className="text-[11px] font-medium text-faint">awaiting votes</span>
     );
   return (
-    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-approve">
-      <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
-        <path
-          d="M2 6.5L4.5 9L10 3"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-      validated by {count} {count === 1 ? "teacher" : "teachers"}
+    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent">
+      ▲ {count} teacher {count === 1 ? "vote" : "votes"}
     </span>
   );
 }
@@ -50,17 +42,24 @@ export function QuestionCard({
   index?: number;
   showAnswer?: boolean;
 }) {
-  const { addQuestion, approve, flag, extraApprovals, localFlags, items } =
-    useStore();
+  const {
+    addQuestion,
+    flag,
+    extraApprovals,
+    localFlags,
+    items,
+    user,
+    myVotes,
+    toggleVote,
+  } = useStore();
   const [flagOpen, setFlagOpen] = useState(false);
-  const [approved, setApproved] = useState(false);
   const [answerOpen, setAnswerOpen] = useState(false);
 
   const inWorksheet = items.some(
     (i) => i.kind === "question" && i.id === question.id
   );
-  const totalValidations =
-    question.validations + (extraApprovals[question.id] ?? 0);
+  const totalVotes = question.validations + (extraApprovals[question.id] ?? 0);
+  const voted = !!myVotes[question.id];
   const flaggedLocally = localFlags[question.id];
 
   return (
@@ -87,7 +86,37 @@ export function QuestionCard({
 
       <div className="mt-3.5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-4">
-          <ValidationBadge count={totalValidations} />
+          {/* the vote — ownership mechanic */}
+          {user ? (
+            <button
+              onClick={() => toggleVote(question.id)}
+              title={
+                voted
+                  ? "Remove your vote"
+                  : "Vote this question up — your vote helps validate it for every member"
+              }
+              className={`inline-flex items-center gap-1.5 rounded-sm border px-2.5 py-1 text-[12px] font-semibold transition-colors ${
+                voted
+                  ? "border-gold/60 bg-gold-soft text-gold"
+                  : "border-hairline text-soft hover:border-gold/50 hover:bg-gold-soft/50 hover:text-gold"
+              }`}
+            >
+              ▲ {totalVotes}
+            </button>
+          ) : (
+            <Link
+              href="/login"
+              title="Log in to vote — free during early access"
+              className="inline-flex items-center gap-1.5 rounded-sm border border-hairline px-2.5 py-1 text-[12px] font-semibold text-soft transition-colors hover:border-hairline-dark hover:text-ink"
+            >
+              ▲ {totalVotes}
+            </Link>
+          )}
+          <span className="hidden text-[11px] text-faint md:inline">
+            {totalVotes === 0
+              ? "awaiting votes"
+              : `validated by ${totalVotes} ${totalVotes === 1 ? "member" : "members"}`}
+          </span>
           {question.status === "flagged" && (
             <span className="rounded-sm bg-flag-soft px-2 py-0.5 text-[11px] font-medium text-flag">
               flagged — {question.flagReason}
@@ -98,11 +127,6 @@ export function QuestionCard({
               you flagged — {flaggedLocally}
             </span>
           )}
-          {!question.calculator && (
-            <span className="hidden text-[11px] text-faint md:inline">
-              no calculator
-            </span>
-          )}
         </div>
 
         <div className="flex items-center gap-1 opacity-70 transition-opacity group-hover:opacity-100">
@@ -111,20 +135,6 @@ export function QuestionCard({
             className="rounded-sm px-2 py-1 text-[11px] font-medium text-soft transition-colors hover:bg-sheet hover:text-ink"
           >
             {answerOpen ? "hide solution" : "solution"}
-          </button>
-          <button
-            onClick={() => {
-              approve(question.id);
-              setApproved(true);
-            }}
-            disabled={approved}
-            className={`rounded-sm px-2 py-1 text-[11px] font-medium transition-colors ${
-              approved
-                ? "text-approve"
-                : "text-soft hover:bg-approve-soft hover:text-approve"
-            }`}
-          >
-            {approved ? "✓ approved" : "approve"}
           </button>
           <div className="relative">
             <button
@@ -153,10 +163,10 @@ export function QuestionCard({
           <button
             onClick={() => addQuestion(question.id)}
             disabled={inWorksheet}
-            className={`ml-1 rounded-sm px-2.5 py-1 text-[11px] font-medium transition-colors ${
+            className={`ml-1 rounded-sm px-2.5 py-1 text-[11px] font-semibold transition-colors ${
               inWorksheet
                 ? "text-faint"
-                : "bg-ink text-paper hover:bg-accent"
+                : "bg-accent text-paper hover:bg-ink"
             }`}
           >
             {inWorksheet ? "in worksheet" : "+ add"}
@@ -165,8 +175,8 @@ export function QuestionCard({
       </div>
 
       {(answerOpen || showAnswer) && (
-        <div className="rise-in mt-4 border-l-2 border-approve/40 bg-approve-soft/40 px-4 py-3">
-          <p className="label mb-1.5 !text-approve">Worked solution</p>
+        <div className="rise-in mt-4 border-l-2 border-accent/40 bg-accent-soft/40 px-4 py-3">
+          <p className="label mb-1.5 !text-accent">Worked solution</p>
           <p className="font-serif text-[15px] leading-relaxed text-ink/90">
             <MathText text={question.answer} />
           </p>

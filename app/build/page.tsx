@@ -264,7 +264,7 @@ export default function BuildPage() {
     <main className="mx-auto max-w-6xl px-6">
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline py-10">
         <div>
-          <h1 className="font-display text-4xl font-medium tracking-tight">
+          <h1 className="font-display text-4xl font-bold tracking-tight">
             The Studio
           </h1>
           <p className="mt-2 max-w-lg font-serif text-soft">

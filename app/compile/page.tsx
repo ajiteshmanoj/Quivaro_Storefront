@@ -96,7 +96,7 @@ export default function CompilePage() {
       <div className="py-10">
         <div className="sheet mx-auto max-w-[720px] border border-hairline bg-white px-14 py-12 shadow-xl shadow-ink/10">
           {/* header, per template */}
-          {isPremium && <div className="-mx-14 -mt-12 mb-10 h-2 bg-accent" />}
+          {isPremium && <div className="-mx-14 -mt-12 mb-10 h-2 bg-gold" />}
 
           {isExam ? (
             <header className="mb-10 text-center">
@@ -131,7 +131,7 @@ export default function CompilePage() {
                   {questions.length} questions · {totalMarks} marks
                 </p>
               </div>
-              {isPremium && <div className="mt-4 h-px bg-accent/60" />}
+              {isPremium && <div className="mt-4 h-px bg-gold/60" />}
             </header>
           )}
 

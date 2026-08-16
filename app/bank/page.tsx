@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { LEVELS, QUESTIONS, TOPICS, type Level, type Topic } from "@/lib/data";
+import { CONTRIBUTORS, QUESTIONS, TOPICS, type Topic } from "@/lib/data";
 import { QuestionCard } from "@/components/QuestionCard";
 import { useStore } from "@/lib/store";
 
@@ -10,15 +10,22 @@ type StatusFilter = "all" | "validated" | "unreviewed" | "flagged";
 export default function BankPage() {
   const { extraApprovals } = useStore();
   const [topic, setTopic] = useState<Topic | "all">("all");
-  const [levels, setLevels] = useState<Level[]>([]);
+  const [subjects, setSubjects] = useState<("AA" | "AI")[]>([]);
+  const [bands, setBands] = useState<("HL" | "SL")[]>([]);
   const [status, setStatus] = useState<StatusFilter>("all");
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
     return QUESTIONS.filter((q) => {
       if (topic !== "all" && q.topic !== topic) return false;
-      if (levels.length > 0 && !q.levels.some((l) => levels.includes(l)))
-        return false;
+      // factory categorisation: subject (AA/AI) and level band (HL/SL)
+      const levelOk = q.levels.some((l) => {
+        const [subj, band] = l.split(" ") as ["AA" | "AI", "HL" | "SL"];
+        const subjOk = subjects.length === 0 || subjects.includes(subj);
+        const bandOk = bands.length === 0 || bands.includes(band);
+        return subjOk && bandOk;
+      });
+      if (!levelOk) return false;
       if (status !== "all" && q.status !== status) return false;
       if (
         query &&
@@ -32,7 +39,7 @@ export default function BankPage() {
         (extraApprovals[b.id] ?? 0) -
         (a.validations + (extraApprovals[a.id] ?? 0))
     );
-  }, [topic, levels, status, query, extraApprovals]);
+  }, [topic, subjects, bands, status, query, extraApprovals]);
 
   const topicCounts = useMemo(() => {
     const counts = new Map<Topic, number>();
@@ -44,12 +51,13 @@ export default function BankPage() {
   return (
     <main className="mx-auto max-w-6xl px-6">
       <div className="border-b border-hairline py-10">
-        <h1 className="font-display text-4xl font-medium tracking-tight">
+        <h1 className="font-display text-4xl font-bold tracking-tight">
           The Bank
         </h1>
         <p className="mt-2 max-w-lg font-serif text-soft">
-          Ranked by teacher validation. Approve what holds up, flag what
-          doesn&rsquo;t — flags return to the factory for repair.
+          Served from the factory&rsquo;s question database — categorised by
+          subject, topic and level, ranked by member votes. Vote for what holds
+          up; flags return to the factory for repair.
         </p>
       </div>
 
@@ -86,33 +94,52 @@ export default function BankPage() {
           </div>
 
           <div>
-            <p className="label mb-3">Level</p>
-            <ul className="space-y-1.5">
-              {LEVELS.map((l) => {
-                const on = levels.includes(l);
+            <p className="label mb-3">Subject</p>
+            <div className="flex gap-1.5">
+              {(["AA", "AI"] as const).map((sub) => {
+                const on = subjects.includes(sub);
                 return (
-                  <li key={l}>
-                    <button
-                      onClick={() =>
-                        setLevels((prev) =>
-                          on ? prev.filter((x) => x !== l) : [...prev, l]
-                        )
-                      }
-                      className="flex items-center gap-2 text-sm text-soft transition-colors hover:text-ink"
-                    >
-                      <span
-                        className={`inline-block h-3 w-3 border transition-colors ${
-                          on
-                            ? "border-accent bg-accent"
-                            : "border-hairline-dark bg-sheet"
-                        }`}
-                      />
-                      <span className={on ? "font-medium text-ink" : ""}>{l}</span>
-                    </button>
-                  </li>
+                  <button
+                    key={sub}
+                    onClick={() =>
+                      setSubjects((prev) =>
+                        on ? prev.filter((x) => x !== sub) : [...prev, sub]
+                      )
+                    }
+                    className={`flex-1 rounded-sm border px-2 py-1.5 text-xs font-semibold transition-colors ${
+                      on
+                        ? "border-accent bg-accent text-paper"
+                        : "border-hairline text-soft hover:border-hairline-dark hover:text-ink"
+                    }`}
+                  >
+                    Math {sub}
+                  </button>
                 );
               })}
-            </ul>
+            </div>
+            <p className="label mb-3 mt-5">Level</p>
+            <div className="flex gap-1.5">
+              {(["HL", "SL"] as const).map((b) => {
+                const on = bands.includes(b);
+                return (
+                  <button
+                    key={b}
+                    onClick={() =>
+                      setBands((prev) =>
+                        on ? prev.filter((x) => x !== b) : [...prev, b]
+                      )
+                    }
+                    className={`flex-1 rounded-sm border px-2 py-1.5 text-xs font-semibold transition-colors ${
+                      on
+                        ? "border-accent bg-accent text-paper"
+                        : "border-hairline text-soft hover:border-hairline-dark hover:text-ink"
+                    }`}
+                  >
+                    {b}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div>
@@ -138,6 +165,35 @@ export default function BankPage() {
                 </li>
               ))}
             </ul>
+          </div>
+          <div className="border-t border-hairline pt-6">
+            <p className="label mb-3">Top members</p>
+            <ul className="space-y-2.5">
+              {CONTRIBUTORS.slice(0, 5).map((c) => (
+                <li key={c.name} className="flex items-baseline justify-between gap-2">
+                  <span className="min-w-0">
+                    <span className="block truncate text-[13px] font-medium text-ink">
+                      {c.name}
+                    </span>
+                    <span className="mt-0.5 flex gap-1">
+                      <span className="rounded-sm border border-gold/50 bg-gold-soft px-1 py-px text-[9px] font-semibold text-gold">
+                        IB Teacher
+                      </span>
+                      {c.founding && (
+                        <span className="rounded-sm border border-gold/50 bg-gold-soft px-1 py-px text-[9px] font-semibold text-gold">
+                          Founding
+                        </span>
+                      )}
+                    </span>
+                  </span>
+                  <span className="q-number shrink-0">▲ {c.approvals}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-[11px] leading-relaxed text-faint">
+              Votes from IB Teacher members carry the most weight. Votes that
+              later get flagged reduce a member&rsquo;s future weight.
+            </p>
           </div>
         </aside>
 

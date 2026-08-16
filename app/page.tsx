@@ -9,46 +9,42 @@ export default function Home() {
 
   return (
     <main className="mx-auto max-w-6xl px-6">
-      {/* hero */}
-      <section className="grid gap-12 border-b border-hairline py-20 md:grid-cols-[1.2fr_1fr] md:py-28">
-        <div>
-          <p className="label mb-6 !text-accent">
-            IB Mathematics · AA HL·SL — AI HL·SL
-          </p>
-          <h1 className="font-display text-5xl font-medium leading-[1.08] tracking-tight text-ink md:text-6xl">
-            The worksheet,
-            <br />
-            <em className="font-light italic text-accent">as it should be.</em>
-          </h1>
-          <p className="mt-7 max-w-md font-serif text-lg leading-relaxed text-soft">
-            Build practice sets and notes-led worksheets from a bank of
-            questions validated by practising IB teachers. Reject what you
-            don&rsquo;t like — a replacement arrives in seconds. Compile to a
-            beautiful PDF.
-          </p>
-          <div className="mt-9 flex items-center gap-5">
-            <Link
-              href="/build"
-              className="rounded-sm bg-ink px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-accent"
-            >
-              Start building
-            </Link>
-            <Link
-              href="/bank"
-              className="text-sm font-medium text-soft underline decoration-hairline-dark underline-offset-4 transition-colors hover:text-ink hover:decoration-accent"
-            >
-              Browse the bank
-            </Link>
-          </div>
-          <p className="mt-8 text-xs text-faint">
-            Everything is free during early access — including worked
-            solutions. Founding contributors keep full access forever.
-          </p>
+      {/* hero — centered, in the brand style */}
+      <section className="border-b border-hairline py-20 text-center md:py-28">
+        <p className="label mb-6 !text-accent">
+          IB Mathematics · AA HL·SL — AI HL·SL
+        </p>
+        <h1 className="mx-auto max-w-3xl font-display text-5xl font-bold leading-[1.1] tracking-tight text-ink md:text-6xl">
+          Study smarter with <span className="text-gold">Quivaro</span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-xl font-serif text-lg leading-relaxed text-soft">
+          Worksheets built from a bank of questions validated by IB teachers —
+          served from the factory&rsquo;s question database, categorised by
+          subject, topic and level. Reject what you don&rsquo;t like; a
+          replacement arrives in seconds.
+        </p>
+        <div className="mt-9 flex items-center justify-center gap-5">
+          <Link
+            href="/build"
+            className="rounded-sm bg-accent px-6 py-3 text-sm font-semibold text-paper transition-colors hover:bg-ink"
+          >
+            Start building
+          </Link>
+          <Link
+            href="/bank"
+            className="text-sm font-medium text-soft underline decoration-hairline-dark underline-offset-4 transition-colors hover:text-ink hover:decoration-gold"
+          >
+            Browse the bank
+          </Link>
         </div>
+        <p className="mt-8 text-xs text-faint">
+          Free everywhere during early access — worked solutions included.
+          Members who join now keep the Founding member tag forever.
+        </p>
 
-        {/* featured question, as a specimen */}
-        <div className="hidden md:block">
-          <div className="rotate-[0.4deg] border border-hairline bg-sheet p-7 shadow-xl shadow-ink/5">
+        {/* specimen */}
+        <div className="mx-auto mt-14 max-w-xl text-left">
+          <div className="border border-hairline bg-sheet p-7 shadow-xl shadow-ink/5">
             <div className="mb-3 flex items-baseline justify-between">
               <span className="q-number">01</span>
               <span className="q-number">[{featured.marks}]</span>
@@ -57,35 +53,37 @@ export default function Home() {
               <MathText text={featured.text} />
             </p>
             <div className="mt-5 flex items-center justify-between border-t border-hairline pt-4">
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium text-approve">
-                ✓ validated by 7 teachers
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-accent">
+                ▲ 7 teacher votes
               </span>
-              <span className="text-[11px] text-faint">Calculus · AA</span>
+              <span className="text-[11px] text-faint">
+                Calculus · AA · validated
+              </span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* the three rooms */}
+      {/* the three pillars */}
       <section className="grid border-b border-hairline md:grid-cols-3">
         {[
           {
             href: "/bank",
-            n: "I",
+            n: "01",
             title: "The Bank",
-            body: "Every question in the syllabus areas you teach, ranked by teacher validation. Browse, filter, approve, flag.",
+            body: "Every question, categorised by subject, topic and level, ranked by member votes. Browse, vote, flag, add.",
           },
           {
             href: "/build",
-            n: "II",
+            n: "02",
             title: "The Studio",
             body: "Assemble a worksheet, reject questions in preview, interleave notes between exercises, choose a paper template.",
           },
           {
-            href: "/community",
-            n: "III",
-            title: "The Community",
-            body: "Practising IB teachers validate every question. Rejections return to the factory. The bank gets better as it is used.",
+            href: "/login",
+            n: "03",
+            title: "Membership",
+            body: "Join free, earn tags like IB Teacher, and vote on questions. Your votes decide what the bank serves — it is yours as much as ours.",
           },
         ].map((c, i) => (
           <Link
@@ -95,8 +93,8 @@ export default function Home() {
               i > 0 ? "border-t border-hairline md:border-l md:border-t-0" : ""
             }`}
           >
-            <p className="font-display text-sm italic text-faint">{c.n}</p>
-            <h2 className="mt-2 font-display text-2xl font-medium text-ink group-hover:text-accent">
+            <p className="font-display text-sm italic text-gold">{c.n}</p>
+            <h2 className="mt-2 font-display text-2xl font-bold text-ink group-hover:text-accent">
               {c.title}
             </h2>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-soft">
@@ -110,12 +108,12 @@ export default function Home() {
       <section className="flex flex-wrap gap-x-16 gap-y-8 py-14">
         {[
           [String(QUESTIONS.length), "questions in the bank"],
-          [String(validated), "teacher-validated"],
+          [String(validated), "member-validated"],
           [String(NOTES.length), "notes chunks"],
-          [String(totalApprovals), "approvals by contributors"],
+          [String(totalApprovals), "votes cast by members"],
         ].map(([n, l]) => (
           <div key={l}>
-            <p className="font-display text-4xl font-light tabular-nums text-ink">
+            <p className="font-display text-4xl font-bold tabular-nums text-ink">
               {n}
             </p>
             <p className="label mt-1.5">{l}</p>
