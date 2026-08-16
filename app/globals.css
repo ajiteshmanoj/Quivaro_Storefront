@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #faf8f3;
+  --color-sheet: #fffdf8;
+  --color-ink: #1b1815;
+  --color-soft: #6e675e;
+  --color-faint: #a59c8f;
+  --color-hairline: #e6dfd2;
+  --color-hairline-dark: #d5ccbc;
+  --color-accent: #8c3b1b;
+  --color-accent-soft: #f5e9e0;
+  --color-approve: #2f6b4f;
+  --color-approve-soft: #e6efe8;
+  --color-flag: #9a6b15;
+  --color-flag-soft: #f6eeda;
+
+  --font-display: var(--font-fraunces);
+  --font-serif: var(--font-newsreader);
+  --font-sans: var(--font-inter);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+/* ---------- editorial primitives ---------- */
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--color-soft);
+}
+
+.q-number {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--color-faint);
+}
+
+.katex {
+  font-size: 1.04em;
+}
+
+/* ---------- motion ---------- */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.replacing {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-paper) 0%,
+    var(--color-sheet) 40%,
+    var(--color-paper) 80%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.1s linear infinite;
+}
+
+/* ---------- workbook ruled lines ---------- */
+
+.ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 27px,
+    var(--color-hairline) 27px,
+    var(--color-hairline) 28px
+  );
+}
+
+/* ---------- print ---------- */
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .sheet {
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0.25in 0.35in !important;
+  }
+  @page {
+    margin: 0.6in;
+  }
+}
