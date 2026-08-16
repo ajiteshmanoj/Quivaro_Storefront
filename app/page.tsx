@@ -11,11 +11,11 @@ const MARQUEE = [
   "✦",
   "teacher approved",
   "✦",
-  "zero mid questions",
+  "quality-checked",
   "✦",
   "stats & prob",
   "✦",
-  "free during early access",
+  "100% free during early access",
   "✦",
   "AA + AI · HL + SL",
   "✦",
@@ -30,17 +30,17 @@ export default function Home() {
     <main>
       {/* hero */}
       <section className="mx-auto max-w-6xl px-6 pb-16 pt-16 text-center md:pt-24">
-        <p className="mx-auto mb-6 inline-block -rotate-1 rounded-full border-2 border-ink bg-gold-soft px-4 py-1.5 text-xs font-bold tracking-wide text-ink">
-          IB MATH AA + AI · HL + SL 📐
+        <p className="mx-auto mb-6 inline-block rounded-full border-2 border-ink bg-gold-soft px-4 py-1.5 text-xs font-bold tracking-wide text-ink">
+          IB MATH AA + AI · HL + SL
         </p>
         <h1 className="mx-auto max-w-3xl font-display text-5xl font-bold leading-[1.05] tracking-tight text-ink md:text-7xl">
           study smarter with{" "}
           <span className="hl-gold whitespace-nowrap">Quivaro</span>
         </h1>
         <p className="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-soft">
-          Worksheets from questions real IB teachers actually approved. Swap out
-          the ones you don&rsquo;t vibe with — a replacement shows up in
-          seconds. Print something that looks proper.
+          Worksheets from questions real IB teachers approved. Swap out any
+          question you don&rsquo;t like — a replacement shows up in seconds.
+          Print something that looks proper.
         </p>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
           <Link
@@ -57,14 +57,13 @@ export default function Home() {
           </Link>
         </div>
         <p className="mt-7 text-xs font-medium text-faint">
-          100% free rn — worked solutions included. Join now, keep the{" "}
-          <span className="font-bold text-gold">Founding member</span> tag
-          forever ✨
+          100% free during early access — worked solutions included. Join now and keep the{" "}
+          <span className="font-bold text-gold">Founding member</span> tag forever ✨
         </p>
 
         {/* specimen */}
         <div className="mx-auto mt-14 max-w-xl text-left">
-          <div className="pop-card relative rotate-[0.6deg] p-7">
+          <div className="pop-card relative p-7">
             <span className="sticker absolute -top-3.5 right-6 bg-accent px-3 py-1 text-[11px] text-paper">
               ✓ teacher approved
             </span>
@@ -109,27 +108,27 @@ export default function Home() {
             emoji: "🏦",
             title: "the bank",
             body: "Every question sorted by subject, topic and level — ranked by member votes. Browse, vote, flag, add.",
-            tilt: "-rotate-1",
+            tilt: "",
           },
           {
             href: "/build",
             emoji: "🛠️",
             title: "the studio",
             body: "Stack questions, drop notes between them, pick a paper template, hit compile. Done before class starts.",
-            tilt: "rotate-0",
+            tilt: "",
           },
           {
             href: "/login",
             emoji: "🏷️",
             title: "membership",
             body: "Join free, earn tags like IB Teacher, vote on what stays in the bank. It's yours as much as ours.",
-            tilt: "rotate-1",
+            tilt: "",
           },
         ].map((c) => (
           <Link
             key={c.href}
             href={c.href}
-            className={`pop-card ${c.tilt} p-7 transition-transform`}
+            className="pop-card p-7"
           >
             <span className="text-3xl">{c.emoji}</span>
             <h2 className="mt-3 font-display text-2xl font-bold text-ink">
@@ -147,12 +146,10 @@ export default function Home() {
           [String(validated), "teacher-validated"],
           [String(NOTES.length), "notes chunks"],
           [String(totalApprovals), "votes cast"],
-        ].map(([n, l], i) => (
+        ].map(([n, l]) => (
           <div
             key={l}
-            className={`sticker bg-sheet px-6 py-3 text-center ${
-              i % 2 === 0 ? "-rotate-1" : "rotate-1"
-            }`}
+            className="sticker bg-sheet px-6 py-3 text-center"
           >
             <span className="font-display text-2xl font-bold tabular-nums text-accent">
               {n}

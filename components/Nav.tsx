@@ -47,8 +47,8 @@ export function Nav() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <span className="hidden -rotate-2 rounded-full border-2 border-ink bg-gold-soft px-3 py-1 text-[11px] font-bold text-ink md:block">
-            free rn ✨
+          <span className="hidden rounded-full border-2 border-ink bg-gold-soft px-3 py-1 text-[11px] font-bold text-ink md:block">
+            Free during early access
           </span>
           {user ? (
             <>

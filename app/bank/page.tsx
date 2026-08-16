@@ -52,7 +52,7 @@ export default function BankPage() {
     <main className="mx-auto max-w-6xl px-6">
       <div className="border-b border-hairline py-10">
         <h1 className="font-display text-4xl font-bold tracking-tight">
-          the bank 🏦
+          the bank
         </h1>
         <p className="mt-2 max-w-lg font-serif text-soft">
           Served from the factory&rsquo;s question database — categorised by

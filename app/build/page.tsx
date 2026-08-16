@@ -265,7 +265,7 @@ export default function BuildPage() {
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-hairline py-10">
         <div>
           <h1 className="font-display text-4xl font-bold tracking-tight">
-            the studio 🛠️
+            the studio
           </h1>
           <p className="mt-2 max-w-lg font-serif text-soft">
             Review every question before it reaches paper. Reject one and a
