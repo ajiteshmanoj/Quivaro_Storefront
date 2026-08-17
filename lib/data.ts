@@ -37,6 +37,30 @@ export interface NoteChunk {
   validations: number;
 }
 
+export interface BetaToken {
+  code: string;
+  /** who this token was issued to, via LinkedIn outreach — blank until issued */
+  issuedTo: string;
+  roleTag: string;
+}
+
+/**
+ * Manus-style drip: a handful of codes issued per day, via LinkedIn DMs to IB
+ * teachers/admins and drops in the Discord. No accounts, no passwords — the
+ * token IS the entry. (Prototype: validated client-side; real version checks
+ * server-side and burns single-use codes.)
+ */
+export const BETA_TOKENS: BetaToken[] = [
+  { code: "QVR-EULER", issuedTo: "", roleTag: "IB Teacher" },
+  { code: "QVR-GAUSS", issuedTo: "", roleTag: "IB Teacher" },
+  { code: "QVR-NEWTON", issuedTo: "", roleTag: "Teacher" },
+  { code: "QVR-FERMAT", issuedTo: "", roleTag: "Tutor" },
+  { code: "QVR-NOETHER", issuedTo: "", roleTag: "Student" },
+  { code: "QVR-MINDLAB", issuedTo: "Matthew Lee", roleTag: "Admin" },
+];
+
+export const DISCORD_URL = "https://discord.gg/quivaro"; // TODO: real invite
+
 export interface Contributor {
   name: string;
   school: string;

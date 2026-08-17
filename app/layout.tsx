@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Newsreader, Space_Grotesk } from "next/font/google";
 import "katex/dist/katex.min.css";
 import "./globals.css";
+import { DISCORD_URL } from "@/lib/data";
 import { StoreProvider } from "@/lib/store";
 import { Nav } from "@/components/Nav";
 
@@ -42,7 +43,17 @@ export default function RootLayout({
                 Quivaro — the IB Mathematics worksheet studio. Free during early
                 access; founding contributors keep full access forever.
               </p>
-              <p>Math AA HL·SL — Math AI HL·SL</p>
+              <p className="flex gap-4">
+                <a
+                  href={DISCORD_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-soft transition-colors hover:text-ink"
+                >
+                  Discord ↗
+                </a>
+                <span>Math AA HL·SL — Math AI HL·SL</span>
+              </p>
             </div>
           </footer>
         </StoreProvider>

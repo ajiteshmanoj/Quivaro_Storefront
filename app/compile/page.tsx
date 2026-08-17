@@ -5,9 +5,34 @@ import { TEMPLATES, noteById, questionById } from "@/lib/data";
 import { MathText } from "@/components/MathText";
 import { useStore } from "@/lib/store";
 
+function BetaGate() {
+  return (
+    <main className="mx-auto max-w-md px-6 py-24 text-center">
+      <p className="mx-auto mb-5 inline-block rounded-full border-2 border-ink bg-gold-soft px-4 py-1.5 text-xs font-bold tracking-wide text-ink">
+        PRIVATE BETA 🎟️
+      </p>
+      <h1 className="font-display text-3xl font-bold tracking-tight">
+        compiling is invite-only
+      </h1>
+      <p className="mt-3 text-soft">
+        You need a beta token to compile worksheets. Invites drop daily in the
+        Discord.
+      </p>
+      <Link
+        href="/beta"
+        className="pop-btn mt-8 inline-block bg-accent px-6 py-3 text-sm text-paper"
+      >
+        enter your token →
+      </Link>
+    </main>
+  );
+}
+
 export default function CompilePage() {
-  const { items, title, level, template, setTemplate, showAnswers, setShowAnswers } =
+  const { items, title, level, template, setTemplate, showAnswers, setShowAnswers, hydrated, betaToken } =
     useStore();
+
+  if (hydrated && !betaToken) return <BetaGate />;
 
   const questions = items.filter((i) => i.kind === "question");
   const totalMarks = questions.reduce(

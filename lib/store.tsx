@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import {
+  BETA_TOKENS,
   NOTES,
   QUESTIONS,
   questionById,
@@ -54,6 +55,7 @@ interface StoreState {
   hydrated: boolean;
   user: User | null;
   myVotes: Record<string, boolean>;
+  betaToken: string | null;
 
   setTitle: (t: string) => void;
   setLevel: (l: Level) => void;
@@ -71,8 +73,9 @@ interface StoreState {
 
   approve: (qid: string) => void;
   flag: (qid: string, reason: FlagReason) => void;
-  login: (name: string, role: MemberRole) => void;
+  login: (name: string, role: MemberRole, extraTags?: string[]) => void;
   logout: () => void;
+  redeemToken: (code: string) => boolean;
   toggleVote: (qid: string) => void;
 
   usedQuestionIds: () => Set<string>;
@@ -100,6 +103,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [myVotes, setMyVotes] = useState<Record<string, boolean>>({});
+  const [betaToken, setBetaToken] = useState<string | null>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // hydrate from localStorage
@@ -118,6 +122,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (s.localFlags) setLocalFlags(s.localFlags);
         if (s.user) setUser(s.user);
         if (s.myVotes) setMyVotes(s.myVotes);
+        if (typeof s.betaToken === "string") setBetaToken(s.betaToken);
       }
     } catch {
       // ignore corrupted state
@@ -139,9 +144,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       localFlags,
       user,
       myVotes,
+      betaToken,
     };
     localStorage.setItem(LS_KEY, JSON.stringify(state));
-  }, [items, title, level, template, showAnswers, rejectedLog, extraApprovals, localFlags, user, myVotes, hydrated]);
+  }, [items, title, level, template, showAnswers, rejectedLog, extraApprovals, localFlags, user, myVotes, betaToken, hydrated]);
 
   useEffect(() => {
     const pending = timers.current;
@@ -276,20 +282,28 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     ]);
   }, []);
 
-  const login = useCallback((name: string, role: MemberRole) => {
+  const login = useCallback((name: string, role: MemberRole, extraTags: string[] = []) => {
     const parts = name.trim().split(/\s+/);
     const initials = parts
       .slice(0, 2)
       .map((p) => p[0]?.toUpperCase() ?? "")
       .join(" ");
-    const tags =
-      role === "IB certified teacher"
-        ? ["IB Teacher", "Founding member"]
-        : [role, "Founding member"];
+    const base =
+      role === "IB certified teacher" ? "IB Teacher" : role;
+    const tags = [base, ...extraTags, "Founding member"];
     setUser({ name: name.trim(), initials, role, tags });
   }, []);
 
   const logout = useCallback(() => setUser(null), []);
+
+  /** Token entry — no accounts, no passwords. The token is the door. */
+  const redeemToken = useCallback((code: string) => {
+    const normalized = code.trim().toUpperCase();
+    const hit = BETA_TOKENS.find((t) => t.code === normalized);
+    if (!hit) return false;
+    setBetaToken(hit.code);
+    return true;
+  }, []);
 
   /** Reddit-style vote toggle — a vote is an approval with ownership. */
   const toggleVote = useCallback((qid: string) => {
@@ -333,8 +347,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     usedQuestionIds,
     user,
     myVotes,
+    betaToken,
     login,
     logout,
+    redeemToken,
     toggleVote,
   };
 

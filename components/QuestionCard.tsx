@@ -103,8 +103,8 @@ export function QuestionCard({
             </button>
           ) : (
             <Link
-              href="/login"
-              title="Log in to vote — free during early access"
+              href="/beta"
+              title="Beta access required to vote — got a token?"
               className="pop-btn inline-flex items-center gap-1.5 bg-sheet px-3 py-1 text-[12px] text-soft hover:text-ink"
             >
               ▲ {totalVotes}

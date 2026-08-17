@@ -12,10 +12,10 @@ export default function ProfilePage() {
       <main className="mx-auto max-w-md px-6 py-24 text-center">
         <p className="font-display text-2xl text-soft">You&rsquo;re not signed in.</p>
         <Link
-          href="/login"
+          href="/beta"
           className="mt-8 inline-block rounded-sm bg-accent px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-ink"
         >
-          Join Quivaro — free
+          Enter the beta
         </Link>
       </main>
     );

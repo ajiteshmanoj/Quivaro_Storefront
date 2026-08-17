@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { DISCORD_URL } from "@/lib/data";
 import { useStore } from "@/lib/store";
 
 const LINKS = [
@@ -47,8 +48,16 @@ export function Nav() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
+          <a
+            href={DISCORD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-bold text-soft transition-colors hover:text-ink"
+          >
+            Discord ↗
+          </a>
           <span className="hidden rounded-full border-2 border-ink bg-gold-soft px-3 py-1 text-[11px] font-bold text-ink md:block">
-            Free during early access
+            Private beta
           </span>
           {user ? (
             <>
@@ -75,10 +84,10 @@ export function Nav() {
             </>
           ) : (
             <Link
-              href="/login"
+              href="/beta"
               className="pop-btn bg-accent px-4 py-1.5 text-xs text-paper"
             >
-              log in
+              got a token?
             </Link>
           )}
         </div>

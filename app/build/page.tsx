@@ -223,6 +223,31 @@ function CanvasNote({ item }: { item: BuildItem }) {
   );
 }
 
+/* ---------- beta gate ---------- */
+
+function BetaGate() {
+  return (
+    <main className="mx-auto max-w-md px-6 py-24 text-center">
+      <p className="mx-auto mb-5 inline-block rounded-full border-2 border-ink bg-gold-soft px-4 py-1.5 text-xs font-bold tracking-wide text-ink">
+        PRIVATE BETA 🎟️
+      </p>
+      <h1 className="font-display text-3xl font-bold tracking-tight">
+        the studio is invite-only
+      </h1>
+      <p className="mt-3 text-soft">
+        Building worksheets needs a beta token. A few drop every day in the
+        Discord — or grab one from us directly on LinkedIn.
+      </p>
+      <Link
+        href="/beta"
+        className="pop-btn mt-8 inline-block bg-accent px-6 py-3 text-sm text-paper"
+      >
+        enter your token →
+      </Link>
+    </main>
+  );
+}
+
 /* ---------- page ---------- */
 
 export default function BuildPage() {
@@ -237,6 +262,7 @@ export default function BuildPage() {
     autoBuild,
     clearWorksheet,
     hydrated,
+    betaToken,
   } = useStore();
   const [selTopics, setSelTopics] = useState<Topic[]>(["Calculus"]);
   const [count, setCount] = useState(6);
@@ -257,6 +283,8 @@ export default function BuildPage() {
       ),
     [questions]
   );
+
+  if (hydrated && !betaToken) return <BetaGate />;
 
   let qNumber = 0;
 

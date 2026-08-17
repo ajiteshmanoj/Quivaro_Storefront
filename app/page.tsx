@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CONTRIBUTORS, NOTES, QUESTIONS } from "@/lib/data";
+import { CONTRIBUTORS, DISCORD_URL, NOTES, QUESTIONS } from "@/lib/data";
 import { MathText } from "@/components/MathText";
 
 const MARQUEE = [
@@ -57,7 +57,7 @@ export default function Home() {
           </Link>
         </div>
         <p className="mt-7 text-xs font-medium text-faint">
-          100% free during early access — worked solutions included. Join now and keep the{" "}
+          Free for beta testers — worked solutions included. Get in early and keep the{" "}
           <span className="font-bold text-gold">Founding member</span> tag forever ✨
         </p>
 
@@ -118,10 +118,10 @@ export default function Home() {
             tilt: "",
           },
           {
-            href: "/login",
-            emoji: "🏷️",
-            title: "membership",
-            body: "Join free, earn tags like IB Teacher, vote on what stays in the bank. It's yours as much as ours.",
+            href: "/beta",
+            emoji: "🎟️",
+            title: "the beta",
+            body: "No accounts — entry is by invite token. A few drop every day in the Discord, and we issue them directly to teachers on LinkedIn.",
             tilt: "",
           },
         ].map((c) => (
@@ -137,6 +137,33 @@ export default function Home() {
             <p className="mt-2 text-sm leading-relaxed text-soft">{c.body}</p>
           </Link>
         ))}
+      </section>
+
+      {/* discord */}
+      <section className="mx-auto max-w-6xl px-6 pb-16">
+        <div className="pop-card flex flex-col items-center gap-5 p-8 text-center md:flex-row md:text-left">
+          <span className="text-4xl">📣</span>
+          <div className="flex-1">
+            <h2 className="font-display text-2xl font-bold text-ink">
+              the beta lives on Discord
+            </h2>
+            <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-soft">
+              Feedback threads shape what gets built each week. Worksheet
+              showcases, syllabus talk, and a small batch of invite tokens
+              every day. Teachers who help shape the beta keep the{" "}
+              <span className="font-bold text-gold">Founding member</span> tag
+              forever.
+            </p>
+          </div>
+          <a
+            href={DISCORD_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pop-btn shrink-0 bg-[#5865F2] px-6 py-3 text-sm text-white"
+          >
+            join the Discord →
+          </a>
+        </div>
       </section>
 
       {/* numbers */}
