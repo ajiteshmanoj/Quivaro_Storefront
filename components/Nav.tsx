@@ -16,8 +16,8 @@ export function Nav() {
   const count = items.filter((i) => i.kind === "question").length;
 
   return (
-    <header className="no-print sticky top-0 z-40 border-b border-hairline bg-paper/90 backdrop-blur-sm">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
+    <header className="no-print sticky top-4 z-40 px-4">
+      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between rounded-full border border-ink/8 bg-white/85 px-6 shadow-[0_8px_30px_-10px_rgba(28,27,23,0.18)] backdrop-blur-md">
         <div className="flex items-baseline gap-10">
           <Link
             href="/"
